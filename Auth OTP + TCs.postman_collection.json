@@ -399,10 +399,6 @@
       "value": "https://api-dev.booktime.org"
     },
     {
-      "key": "email",
-      "value": "nidam95278@poisonword.com"
-    },
-    {
       "key": "otp",
       "value": "183748"
     },
@@ -413,6 +409,10 @@
     {
       "key": "Authorization",
       "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGZjZTZmOTViNzRhNDkzN2E5MGMzMDdiYzAyMGExZmEiLCJtYWlsYm94IjoibmlkYW05NTI3OEBwb2lzb253b3JkLmNvbSIsImlhdCI6MTc2MDUxMzEzMX0.OpT0s2uWBVj-6d-f0h74AakIjp7s-ELUoGunxu7zlpA"
+    },
+    {
+      "key": "email",
+      "value": ""
     }
   ]
 }
