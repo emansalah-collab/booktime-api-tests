@@ -17,7 +17,9 @@
               "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
               "pm.test(\"Message correct\", () => pm.expect(res.data.message).to.eql(\"OTP sent successfully\"));",
               "pm.test(\"Expiry exists\", () => pm.expect(res.data.otp_expires_in).to.not.be.undefined);",
-              "pm.execution.setNextRequest(\"Get OTP\");"
+              "setTimeout(() => {",
+              "    pm.execution.setNextRequest(\"Get OTP\");",
+              "}, 2000);"
             ],
             "type": "text/javascript",
             "packages": {},
