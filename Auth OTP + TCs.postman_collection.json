@@ -128,7 +128,16 @@
               "let res = pm.response.json();",
               "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
               "pm.test(\"Token exists\", () => pm.expect(res.data.create_account_token || res.data.access_token).to.not.be.undefined);",
-              "pm.collectionVariables.set(\"create_account_token\", res.data.create_account_token);"
+              "pm.collectionVariables.set(\"create_account_token\", res.data.create_account_token);",
+              "let jsonData = pm.response.json();",
+              "",
+              "if (pm.response.code === 200) {",
+              "",
+              "    pm.test(\"Token exists\", () => {",
+              "        pm.expect(jsonData.data.create_account_token).to.exist;",
+              "    });",
+              "",
+              "}"
             ],
             "type": "text/javascript",
             "packages": {},
