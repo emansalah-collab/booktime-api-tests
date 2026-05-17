@@ -1,0 +1,393 @@
+{
+  "info": {
+    "_postman_id": "1a20332e-f016-4fe6-b519-09ed9a53ec6f",
+    "name": "Auth OTP + TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Send OTP - Valid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();",
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Message correct\", () => pm.expect(res.data.message).to.eql(\"OTP sent successfully\"));",
+              "pm.test(\"Expiry exists\", () => pm.expect(res.data.otp_expires_in).to.not.be.undefined);",
+              "pm.execution.setNextRequest(\"Get OTP\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\"email\": \"{{email}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/en/auth/send-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "en",
+            "auth",
+            "send-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get OTP",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();",
+              "",
+              "let msg = res.messages && res.messages[0];",
+              "",
+              "pm.test(\"Message exists\", function () {",
+              "    pm.expect(msg).to.not.be.undefined;",
+              "});",
+              "",
+              "let match = msg?.subject?.match(/\\d{6}/);",
+              "",
+              "if (match && match[0]) {",
+              "",
+              "    pm.collectionVariables.set(\"otp\", match[0]);",
+              "    console.log(\"OTP saved:\", match[0]);",
+              "",
+              "    // روح للخطوة اللي بعدها",
+              "    postman.setNextRequest(\"Verify OTP - Valid\");",
+              "",
+              "} else {",
+              "",
+              "    console.log(\"OTP NOT FOUND - retrying...\");",
+              "",
+              "    // كرر نفس request",
+              "    postman.setNextRequest(\"Get OTP\");",
+              "}",
+              "console.log(res);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGZjZTZmOTViNzRhNDkzN2E5MGMzMDdiYzAyMGExZmEiLCJtYWlsYm94IjoieGV0aWg0NjE3N0ByeXppZC5jb20iLCJpYXQiOjE3NjA1MTMxMzF9.oJ3rlV1RWfxZXZ2CYb0bBclKjpx8oKibK69i5oB0rrY",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://web2.temp-mail.org/messages",
+          "protocol": "https",
+          "host": [
+            "web2",
+            "temp-mail",
+            "org"
+          ],
+          "path": [
+            "messages"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify OTP - Valid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();",
+              "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Token exists\", () => pm.expect(res.data.create_account_token || res.data.access_token).to.not.be.undefined);",
+              "pm.collectionVariables.set(\"create_account_token\", res.data.create_account_token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "console.log(\"OTP =\", pm.collectionVariables.get(\"otp\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp_code\": \"{{otp}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/auth/verify-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "auth",
+            "verify-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify OTP - Invalid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+              "let res = pm.response.json();",
+              "pm.test(\"Invalid OTP\", () => pm.expect(res.error_message).to.include(\"Invalid\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp_code\": \"000000\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/auth/verify-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "auth",
+            "verify-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify OTP - Consumed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+              "let res = pm.response.json();",
+              "pm.test(\"Consumed OTP\", () => pm.expect(res.error_message).to.eql(\"OTP has already been consumed\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp_code\": \"{{otp}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/auth/verify-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "auth",
+            "verify-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send OTP - Invalid Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+              "let res = pm.response.json();",
+              "pm.test(\"Invalid email\", () => pm.expect(res.error_message).to.include(\"Invalid\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/en/auth/send-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "en",
+            "auth",
+            "send-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Send OTP - Empty Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/v1/en/auth/send-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "v1",
+            "en",
+            "auth",
+            "send-otp"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api-dev.booktime.org"
+    },
+    {
+      "key": "email",
+      "value": "nidam95278@poisonword.com"
+    },
+    {
+      "key": "otp",
+      "value": "183748"
+    },
+    {
+      "key": "create_account_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJuaWRhbTk1Mjc4QHBvaXNvbndvcmQuY29tIiwidG9rZW5UeXBlIjoiQ3JlYXRlVXNlclRva2VuIiwianRpIjoiOWMyZmE1YTktMjkwZS00NjhiLWFiZTUtNGI2OTU0YmE3M2M2IiwiZXhwIjoyMDkyODg0NzEzLCJpc3MiOiJ3d3cuYm9va3RpbWUub3JnIiwiYXVkIjoiaHR0cDovL2FwaS1kZXYuYm9va3RpbWUub3JnLyJ9.plc5pivMO6wnePe_XfIq6j4deL464Uh1eHZTyqDwgR4"
+    },
+    {
+      "key": "Authorization",
+      "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGZjZTZmOTViNzRhNDkzN2E5MGMzMDdiYzAyMGExZmEiLCJtYWlsYm94IjoibmlkYW05NTI3OEBwb2lzb253b3JkLmNvbSIsImlhdCI6MTc2MDUxMzEzMX0.OpT0s2uWBVj-6d-f0h74AakIjp7s-ELUoGunxu7zlpA"
+    }
+  ]
+}

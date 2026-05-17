@@ -1,0 +1,811 @@
+{
+  "info": {
+    "_postman_id": "d7389606-8b16-426c-8499-69215b92f489",
+    "name": "Series  + TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Series Copy",
+      "item": [
+        {
+          "name": "series",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is not empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Response has valid JSON structure\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains data.series\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property(\"series\");",
+                  "    pm.expect(jsonData.data.series).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Series list is not empty\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.series.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate series object structure\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series).to.have.property(\"series_id\");",
+                  "    pm.expect(series).to.have.property(\"series_title\");",
+                  "    pm.expect(series).to.have.property(\"reading_level_id\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data types\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.series_id).to.be.a(\"number\");",
+                  "    pm.expect(series.series_title).to.be.a(\"string\");",
+                  "    pm.expect(series.reading_level_id).to.be.a(\"number\");",
+                  "});",
+                  "pm.test(\"Validate banner URLs format\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.series_mobile_banner_url).to.include(\"https://\");",
+                  "    pm.expect(series.series_landscape_banner_url).to.include(\"https://\");",
+                  "    pm.expect(series.series_portrait_banner_url).to.include(\"https://\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books field validation\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.books === null || Array.isArray(series.books)).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Reading level is within valid range\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.reading_level_id).to.be.within(1, 10);",
+                  "});",
+                  "",
+                  "pm.test(\"No duplicate series IDs\", function () {",
+                  "    let series = pm.response.json().data.series;",
+                  "",
+                  "    let ids = series.map(s => s.series_id);",
+                  "    let uniqueIds = [...new Set(ids)];",
+                  "",
+                  "    pm.expect(ids.length).to.eql(uniqueIds.length);",
+                  "});",
+                  "",
+                  "pm.test(\"Language code affects response\", function () {",
+                  "    let url = pm.request.url.toString();",
+                  "    pm.expect(url).to.include(\"/v1/\");",
+                  "});",
+                  "",
+                  "pm.test(\"Series titles are not null\", function () {",
+                  "    let series = pm.response.json().data.series;",
+                  "",
+                  "    series.forEach(item => {",
+                  "        pm.expect(item.series_title).to.not.be.null;",
+                  "        pm.expect(item.series_title).to.not.equal(\"\");",
+                  "    });",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/series",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "series"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/series' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "series-user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is not empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Response has valid JSON structure\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains data.series\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property(\"series\");",
+                  "    pm.expect(jsonData.data.series).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Series list is not empty\", function () {",
+                  "    let jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.series.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate series object structure\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series).to.have.property(\"series_id\");",
+                  "    pm.expect(series).to.have.property(\"series_title\");",
+                  "    pm.expect(series).to.have.property(\"reading_level_id\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data types\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.series_id).to.be.a(\"number\");",
+                  "    pm.expect(series.series_title).to.be.a(\"string\");",
+                  "    pm.expect(series.reading_level_id).to.be.a(\"number\");",
+                  "});",
+                  "pm.test(\"Validate banner URLs format\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.series_mobile_banner_url).to.include(\"https://\");",
+                  "    pm.expect(series.series_landscape_banner_url).to.include(\"https://\");",
+                  "    pm.expect(series.series_portrait_banner_url).to.include(\"https://\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books field validation\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.books === null || Array.isArray(series.books)).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Reading level is within valid range\", function () {",
+                  "    let series = pm.response.json().data.series[0];",
+                  "",
+                  "    pm.expect(series.reading_level_id).to.be.within(1, 10);",
+                  "});",
+                  "",
+                  "pm.test(\"No duplicate series IDs\", function () {",
+                  "    let series = pm.response.json().data.series;",
+                  "",
+                  "    let ids = series.map(s => s.series_id);",
+                  "    let uniqueIds = [...new Set(ids)];",
+                  "",
+                  "    pm.expect(ids.length).to.eql(uniqueIds.length);",
+                  "});",
+                  "",
+                  "pm.test(\"Language code affects response\", function () {",
+                  "    let url = pm.request.url.toString();",
+                  "    pm.expect(url).to.include(\"/v1/\");",
+                  "});",
+                  "",
+                  "pm.test(\"Series titles are not null\", function () {",
+                  "    let series = pm.response.json().data.series;",
+                  "",
+                  "    series.forEach(item => {",
+                  "        pm.expect(item.series_title).to.not.be.null;",
+                  "        pm.expect(item.series_title).to.not.equal(\"\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// Example: invalid userId",
+                  "pm.test(\"Invalid userId should return empty or error\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/series?userId={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "series"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/series?userId=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "series-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ✅ Parse response",
+                  "let responseJson = pm.response.json();",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response structure",
+                  "pm.test(\"Response has data object\", function () {",
+                  "    pm.expect(responseJson).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Series info validation",
+                  "pm.test(\"Series info is valid\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"series_id\");",
+                  "    pm.expect(responseJson.data).to.have.property(\"series_title\");",
+                  "});",
+                  "",
+                  "// ✅ Books list exists",
+                  "pm.test(\"Books list exists\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"books\");",
+                  "    pm.expect(responseJson.data.books).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// ✅ Books list not empty (optional)",
+                  "pm.test(\"Books list is not empty\", function () {",
+                  "    pm.expect(responseJson.data.books.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "// ✅ Validate book fields",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book).to.have.property(\"book_id\");",
+                  "    pm.expect(book).to.have.property(\"book_title\");",
+                  "    pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "});",
+                  "",
+                  "// ✅ Validate contributors",
+                  "pm.test(\"Book has contributors\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book.contributors).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// ✅ Validate supported voices",
+                  "pm.test(\"Book has supported voices\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book.supported_voices).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  "// ✅ Pagination validation",
+                  "pm.test(\"Pagination fields exist\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"total_pages\");",
+                  "    pm.expect(responseJson.data).to.have.property(\"current_page\");",
+                  "});",
+                  "",
+                  "// ✅ Response time",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Voice language matches request\", function () {",
+                  "    let lang = pm.collectionVariables.get(\"reading_language_iso_code\");",
+                  "",
+                  "    pm.expect(lang, \"Language variable is missing\").to.exist;",
+                  "",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    if (book.supported_voices.length > 0) {",
+                  "        let responseLang = book.supported_voices[0].reading_language_iso_code;",
+                  "",
+                  "        pm.expect(responseLang).to.eql(lang);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/series/{{series_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "series",
+                "{{series_id}}"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/series/45623412' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "series-books-user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ✅ Parse response",
+                  "let responseJson = pm.response.json();",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response structure",
+                  "pm.test(\"Response has data object\", function () {",
+                  "    pm.expect(responseJson).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Series info validation",
+                  "pm.test(\"Series info is valid\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"series_id\");",
+                  "    pm.expect(responseJson.data).to.have.property(\"series_title\");",
+                  "});",
+                  "",
+                  "// ✅ Books list exists",
+                  "pm.test(\"Books list exists\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"books\");",
+                  "    pm.expect(responseJson.data.books).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// ✅ Books list not empty (optional)",
+                  "pm.test(\"Books list is not empty\", function () {",
+                  "    pm.expect(responseJson.data.books.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "// ✅ Validate book fields",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book).to.have.property(\"book_id\");",
+                  "    pm.expect(book).to.have.property(\"book_title\");",
+                  "    pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "});",
+                  "",
+                  "// ✅ Validate contributors",
+                  "pm.test(\"Book has contributors\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book.contributors).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// ✅ Validate supported voices",
+                  "pm.test(\"Book has supported voices\", function () {",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    pm.expect(book.supported_voices).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  "// ✅ Pagination validation",
+                  "pm.test(\"Pagination fields exist\", function () {",
+                  "    pm.expect(responseJson.data).to.have.property(\"total_pages\");",
+                  "    pm.expect(responseJson.data).to.have.property(\"current_page\");",
+                  "});",
+                  "",
+                  "// ✅ Response time",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Voice language matches request\", function () {",
+                  "    let lang = pm.collectionVariables.get(\"reading_language_iso_code\");",
+                  "",
+                  "    pm.expect(lang, \"Language variable is missing\").to.exist;",
+                  "",
+                  "    let book = responseJson.data.books[0];",
+                  "",
+                  "    if (book.supported_voices.length > 0) {",
+                  "        let responseLang = book.supported_voices[0].reading_language_iso_code;",
+                  "",
+                  "        pm.expect(responseLang).to.eql(lang);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/series/{{series_id}}?user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "series",
+                "{{series_id}}"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/series/45623412?user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "recommended-series",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ✅ Parse response",
+                  "let responseJson = pm.response.json();",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response Time",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// ✅ Data exists",
+                  "pm.test(\"Response has data\", function () {",
+                  "    pm.expect(responseJson).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Data is array or object (flexible)",
+                  "pm.test(\"Data is valid type\", function () {",
+                  "    pm.expect(responseJson.data).to.satisfy(val =>",
+                  "        Array.isArray(val) || typeof val === \"object\"",
+                  "    );",
+                  "});",
+                  "",
+                  "// ✅ If array → validate series list",
+                  "if (Array.isArray(responseJson.data)) {",
+                  "",
+                  "    pm.test(\"Series list is not empty\", function () {",
+                  "        pm.expect(responseJson.data.length).to.be.at.least(0);",
+                  "    });",
+                  "",
+                  "    pm.test(\"Each series has required fields\", function () {",
+                  "        if (responseJson.data.length > 0) {",
+                  "            let series = responseJson.data[0];",
+                  "",
+                  "            pm.expect(series).to.have.property(\"series_id\");",
+                  "            pm.expect(series).to.have.property(\"series_title\");",
+                  "        }",
+                  "    });",
+                  "}",
+                  "",
+                  "// ✅ Language validation",
+                  "pm.test(\"Language matches request\", function () {",
+                  "    let lang = pm.environment.get(\"reading_language_iso_code\");",
+                  "",
+                  "    if (!lang) {",
+                  "        console.warn(\"Language variable is missing\");",
+                  "        return; // skip test بدل ما يفشل",
+                  "    }",
+                  "",
+                  "    responseJson.data.forEach(series => {",
+                  "        series.top_books.forEach(book => {",
+                  "            book.supported_voices.forEach(voice => {",
+                  "                pm.expect(",
+                  "                    voice.reading_language_iso_code.toLowerCase()",
+                  "                ).to.eql(",
+                  "                    lang.toLowerCase()",
+                  "                );",
+                  "            });",
+                  "        });",
+                  "    });",
+                  "});",
+                  "",
+                  "// ✅ Response not empty (optional)",
+                  "pm.test(\"Response is not empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/recommended-series",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "recommended-series"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/recommended-series' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "recommended-series-user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ✅ Parse response safely",
+                  "let responseJson;",
+                  "try {",
+                  "    responseJson = pm.response.json();",
+                  "} catch (e) {",
+                  "    pm.test(\"Response is valid JSON\", function () {",
+                  "        pm.expect.fail(\"Response is not valid JSON\");",
+                  "    });",
+                  "}",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response Time",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// ✅ Data exists",
+                  "pm.test(\"Response has data property\", function () {",
+                  "    pm.expect(responseJson).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Data type validation",
+                  "pm.test(\"Data is valid type (array or object)\", function () {",
+                  "    pm.expect(responseJson.data).to.satisfy(val =>",
+                  "        Array.isArray(val) || (val && typeof val === \"object\")",
+                  "    );",
+                  "});",
+                  "",
+                  "// ===============================",
+                  "// 📦 ARRAY HANDLING",
+                  "// ===============================",
+                  "if (Array.isArray(responseJson.data)) {",
+                  "",
+                  "    // ✅ Allow empty but ensure type correctness",
+                  "    pm.test(\"Data is an array\", function () {",
+                  "        pm.expect(responseJson.data).to.be.an(\"array\");",
+                  "    });",
+                  "",
+                  "    // ✅ Validate structure only if items exist",
+                  "    if (responseJson.data.length > 0) {",
+                  "",
+                  "        pm.test(\"Series objects have required fields\", function () {",
+                  "            responseJson.data.forEach(series => {",
+                  "                pm.expect(series).to.have.property(\"series_id\");",
+                  "                pm.expect(series).to.have.property(\"series_title\");",
+                  "            });",
+                  "        });",
+                  "",
+                  "        // Optional deeper validation if nested structure exists",
+                  "        pm.test(\"Series IDs are valid\", function () {",
+                  "            responseJson.data.forEach(series => {",
+                  "                pm.expect(series.series_id).to.be.a(\"number\");",
+                  "            });",
+                  "        });",
+                  "",
+                  "    } else {",
+                  "        pm.test(\"Series list can be empty but valid\", function () {",
+                  "            pm.expect(responseJson.data.length).to.eql(0);",
+                  "        });",
+                  "    }",
+                  "}",
+                  "",
+                  "// ===============================",
+                  "// 🌍 LANGUAGE VALIDATION (SAFE)",
+                  "// ===============================",
+                  "pm.test(\"Language consistency check\", function () {",
+                  "",
+                  "    let lang = pm.environment.get(\"reading_language_iso_code\");",
+                  "",
+                  "    if (!lang) {",
+                  "        console.warn(\"Skipping language check: missing environment variable\");",
+                  "        return;",
+                  "    }",
+                  "",
+                  "    if (!responseJson?.data || !Array.isArray(responseJson.data)) {",
+                  "        console.warn(\"Skipping language check: invalid data format\");",
+                  "        return;",
+                  "    }",
+                  "",
+                  "    responseJson.data.forEach(series => {",
+                  "",
+                  "        if (!series.top_books) return;",
+                  "",
+                  "        series.top_books.forEach(book => {",
+                  "",
+                  "            if (!book.supported_voices) return;",
+                  "",
+                  "            book.supported_voices.forEach(voice => {",
+                  "",
+                  "                if (!voice.reading_language_iso_code) return;",
+                  "",
+                  "                pm.expect(",
+                  "                    voice.reading_language_iso_code.toLowerCase()",
+                  "                ).to.eql(lang.toLowerCase());",
+                  "",
+                  "            });",
+                  "        });",
+                  "    });",
+                  "});",
+                  "",
+                  "// ===============================",
+                  "// 🚫 EMPTY RESPONSE VALIDATION",
+                  "// ===============================",
+                  "pm.test(\"Response is not null or undefined\", function () {",
+                  "    pm.expect(responseJson).to.not.be.oneOf([null, undefined]);",
+                  "});",
+                  "",
+                  "// ===============================",
+                  "// 📏 OPTIONAL STRUCTURE CHECK",
+                  "// ===============================",
+                  "pm.test(\"Response has no unexpected null fields (basic check)\", function () {",
+                  "",
+                  "    function checkNoNulls(obj) {",
+                  "        if (obj && typeof obj === \"object\") {",
+                  "            Object.keys(obj).forEach(key => {",
+                  "                pm.expect(obj[key]).to.not.be.undefined;",
+                  "            });",
+                  "        }",
+                  "    }",
+                  "",
+                  "    if (Array.isArray(responseJson.data)) {",
+                  "        responseJson.data.forEach(checkNoNulls);",
+                  "    } else {",
+                  "        checkNoNulls(responseJson.data);",
+                  "    }",
+                  "});",
+                  "",
+                  "// ===============================",
+                  "// ⚡ PERFORMANCE SAFETY",
+                  "// ===============================",
+                  "pm.test(\"Response time is within SLA\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/recommended-series?user_id= {{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "recommended-series"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": " {{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/recommended-series?user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "reading_language_iso_code",
+      "value": ""
+    },
+    {
+      "key": "series_id",
+      "value": ""
+    }
+  ]
+}

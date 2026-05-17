@@ -1,0 +1,689 @@
+{
+  "info": {
+    "_postman_id": "d51ec2f7-c35d-417b-ae0e-7e53dda4eabc",
+    "name": "Users+ TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Users Copy",
+      "item": [
+        {
+          "name": "https://api-dev.booktime.org/v1/users/profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time is less than 200ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response contains data object\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "    pm.expect(res.data).to.be.an(\"object\");",
+                  "});",
+                  "",
+                  "pm.test(\"All required user fields exist\", function () {",
+                  "    pm.expect(res.data).to.have.property(\"user_id\");",
+                  "    pm.expect(res.data).to.have.property(\"user_first_name\");",
+                  "    pm.expect(res.data).to.have.property(\"user_last_name\");",
+                  "    pm.expect(res.data).to.have.property(\"user_username\");",
+                  "    pm.expect(res.data).to.have.property(\"user_email\");",
+                  "});",
+                  "",
+                  "pm.test(\"User fields have correct data types\", function () {",
+                  "    pm.expect(res.data.user_id).to.be.a(\"number\");",
+                  "    pm.expect(res.data.user_first_name).to.be.a(\"string\");",
+                  "    pm.expect(res.data.user_last_name).to.be.a(\"string\");",
+                  "    pm.expect(res.data.user_username).to.be.a(\"string\");",
+                  "    pm.expect(res.data.user_email).to.be.a(\"string\");",
+                  "});",
+                  "",
+                  "pm.test(\"User fields are not empty\", function () {",
+                  "    pm.expect(res.data.user_first_name).to.not.be.empty;",
+                  "    pm.expect(res.data.user_last_name).to.not.be.empty;",
+                  "    pm.expect(res.data.user_username).to.not.be.empty;",
+                  "    pm.expect(res.data.user_email).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Email format is valid\", function () {",
+                  "    pm.expect(res.data.user_email)",
+                  "      .to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);",
+                  "});",
+                  "",
+                  "pm.test(\"Username matches email format\", function () {",
+                  "    pm.expect(res.data.user_username)",
+                  "      .to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);",
+                  "});",
+                  "",
+                  "pm.test(\"user_id is positive number\", function () {",
+                  "    pm.expect(res.data.user_id).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Auth token exists\", function () {",
+                  "    const token = pm.environment.get(\"auth_token\");",
+                  "    pm.expect(token).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "pm.test(\"Authorization header is present\", function () {",
+                  "    pm.expect(pm.request.headers.has(\"Authorization\")).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}}}/v1/users/profile",
+              "host": [
+                "{{base_url}}}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "profile"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/users/profile' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMzg5MzUxODEyNTI5Iiwicm9sZSI6InJlYWRlciIsImp0aSI6Ijk4ZjhkOTA4LTUxNmQtNDkxZS1iNjUxLTJhYThjYzVmODVlNCIsImV4cCI6MjA4NTcyOTQwMywiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.Mw_BFKqqhj2lUs7awLfu4-2gq9CKb9jvKtwNpjSPLKI'"
+          },
+          "response": []
+        },
+        {
+          "name": "https://api-dev.booktime.org/v1/users/profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2000ms\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"First and last name updated correctly\", () => {",
+                  "    pm.expect(res.data.user_first_name).to.eql(\"Test\");",
+                  "    pm.expect(res.data.user_last_name).to.eql(\"hindawi3\");",
+                  "});",
+                  "",
+                  "pm.test(\"Fields have correct data types\", () => {",
+                  "    pm.expect(res.data.user_first_name).to.be.a(\"string\");",
+                  "    pm.expect(res.data.user_last_name).to.be.a(\"string\");",
+                  "});",
+                  "",
+                  "pm.test(\"Fields have correct data types\", () => {",
+                  "    pm.expect(res.data.user_first_name).to.be.a(\"string\");",
+                  "    pm.expect(res.data.user_last_name).to.be.a(\"string\");",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_first_name\": \"Test\",\n  \"user_last_name\": \"update 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}}}/v1/users/profile",
+              "host": [
+                "{{base_url}}}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "profile"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'PATCH' \\\n  'https://api-dev.booktime.org/v1/users/profile' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMzg5MzUxODEyNTI5Iiwicm9sZSI6InJlYWRlciIsImp0aSI6Ijk4ZjhkOTA4LTUxNmQtNDkxZS1iNjUxLTJhYThjYzVmODVlNCIsImV4cCI6MjA4NTcyOTQwMywiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.Mw_BFKqqhj2lUs7awLfu4-2gq9CKb9jvKtwNpjSPLKI' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"user_first_name\": \"Test\",\n  \"user_last_name\": \"hindawi3\"\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "https://api-dev.booktime.org/v1/users/deactivate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2000ms\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Data contains message\", () => {",
+                  "    pm.expect(res.data).to.have.property(\"message\");",
+                  "});",
+                  "",
+                  "pm.test(\"Correct success message\", () => {",
+                  "    pm.expect(res.data.message).to.eql(\"Account deactivated successfully\");",
+                  "});",
+                  "",
+                  "pm.test(\"Message is string\", () => {",
+                  "    pm.expect(res.data.message).to.be.a(\"string\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/users/deactivate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "deactivate"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/users/deactivate' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMzg5MzUxODEyNTI5Iiwicm9sZSI6InJlYWRlciIsImp0aSI6Ijk4ZjhkOTA4LTUxNmQtNDkxZS1iNjUxLTJhYThjYzVmODVlNCIsImV4cCI6MjA4NTcyOTQwMywiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.Mw_BFKqqhj2lUs7awLfu4-2gq9CKb9jvKtwNpjSPLKI' \\\n  -d ''"
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "rating Copy",
+      "item": [
+        {
+          "name": "https://api-dev.booktime.org/v1/users/rating",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2000ms\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response is boolean\", () => {",
+                  "    pm.expect(res).to.be.a(\"boolean\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response is either true or false\", () => {",
+                  "    pm.expect([true, false]).to.include(res);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is not null\", () => {",
+                  "    pm.expect(res).to.not.be.null;",
+                  "});",
+                  "",
+                  "// pm.test(\"Unauthorized without token\", () => {",
+                  "//     pm.response.to.have.status(401);",
+                  "// });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              }
+            ],
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/users/rating",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "rating"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/users/rating' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMTAxOTE4NzU2Nzg2Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImVjMTZjNDgwLTQ4MTctNDIwMS1hNjgzLTFmZGM1OTc3YWMzOCIsImV4cCI6MjA4NTcxOTE3NSwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.CNh8bQxdkGDao-UV1zIF0raQyHq84wJnR5VZS_hLx1M'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "favorites Copy",
+      "item": [
+        {
+          "name": "https://api-dev.booktime.org/v1/users/en/favorites?ids_only=true&page=1&page_size=20",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              }
+            ],
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/users/en/favorites?ids_only=true&page=1&page_size=20",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "en",
+                "favorites"
+              ],
+              "query": [
+                {
+                  "key": "ids_only",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/users/en/favorites?ids_only=true&page=1&page_size=20' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMTAxOTE4NzU2Nzg2Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImVjMTZjNDgwLTQ4MTctNDIwMS1hNjgzLTFmZGM1OTc3YWMzOCIsImV4cCI6MjA4NTcxOTE3NSwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.CNh8bQxdkGDao-UV1zIF0raQyHq84wJnR5VZS_hLx1M'"
+          },
+          "response": []
+        },
+        {
+          "name": "https://api-dev.booktime.org/v1/users/en/favorites",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": 58313910\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/users/en/favorites",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "en",
+                "favorites"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/users/en/favorites' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJpc2V2NDM5OTlAYWl4aW5kLmNvbSIsImlkIjoiODM1NDUyNDEzNDE4Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImNjMTg1ZGVmLTFlNjctNDYyZi1hOTVkLTJiYTVkYWExNTVmZiIsImV4cCI6MjA4NTc0Mzc3NiwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.qszlX6Lx0Ex9HJQ2Y0QQWij0nKQwI1cE_x0FMvYNxNY' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"book_id\": 58313910\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "https://api-dev.booktime.org/v1/users/en/favorites",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": 58313910\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/users/en/favorites",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "en",
+                "favorites"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'DELETE' \\\n  'https://api-dev.booktime.org/v1/users/en/favorites' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJpc2V2NDM5OTlAYWl4aW5kLmNvbSIsImlkIjoiODM1NDUyNDEzNDE4Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImNjMTg1ZGVmLTFlNjctNDYyZi1hOTVkLTJiYTVkYWExNTVmZiIsImV4cCI6MjA4NTc0Mzc3NiwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.qszlX6Lx0Ex9HJQ2Y0QQWij0nKQwI1cE_x0FMvYNxNY' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"book_id\": 58313910\n}'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Post dowloads Copy-not used",
+      "item": [
+        {
+          "name": "https://api-dev.booktime.org/v1/users/en/downloads",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": 18215969\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/users/en/downloads",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "en",
+                "downloads"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/users/en/downloads' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMTAxOTE4NzU2Nzg2Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImVjMTZjNDgwLTQ4MTctNDIwMS1hNjgzLTFmZGM1OTc3YWMzOCIsImV4cCI6MjA4NTcxOTE3NSwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.CNh8bQxdkGDao-UV1zIF0raQyHq84wJnR5VZS_hLx1M' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"book_id\": 0\n}'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Status Copy",
+      "item": [
+        {
+          "name": "https://api-dev.booktime.org/v1/users/status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+              }
+            ],
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/users/status",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "status"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/users/status' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMTAxOTE4NzU2Nzg2Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImVjMTZjNDgwLTQ4MTctNDIwMS1hNjgzLTFmZGM1OTc3YWMzOCIsImV4cCI6MjA4NTcxOTE3NSwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.CNh8bQxdkGDao-UV1zIF0raQyHq84wJnR5VZS_hLx1M'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Add/del users Copy",
+      "item": [
+        {
+          "name": "/v1/users",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "users"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "Authorization",
+      "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc"
+    },
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}

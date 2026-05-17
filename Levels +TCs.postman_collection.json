@@ -1,0 +1,254 @@
+{
+  "info": {
+    "_postman_id": "fc94c636-a158-42d7-8bb9-17d93fdd22ca",
+    "name": "Levels +TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Levels Copy",
+      "item": [
+        {
+          "name": "reading-levels",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data exists and is array\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Data array is not empty\", function () {",
+                  "    pm.expect(res.data.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Each item has reading_level_id\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item).to.have.property(\"reading_level_id\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"reading_level_id is number\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_level_id).to.be.a(\"number\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"reading_level_id values are positive\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_level_id).to.be.above(0);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"No duplicate reading_level_id\", function () {",
+                  "    const ids = res.data.map(item => item.reading_level_id);",
+                  "    const uniqueIds = [...new Set(ids)];",
+                  "    pm.expect(ids.length).to.eql(uniqueIds.length);",
+                  "});",
+                  "",
+                  "pm.test(\"reading_level_id within expected range\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_level_id).to.be.within(1, 10);",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/reading-levels",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "reading-levels"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/reading-levels' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "reading-engines",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data exists and is array\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Reading engines list is not empty\", function () {",
+                  "    pm.expect(res.data.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Each item has required fields\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item).to.have.property(\"reading_engine_id\");",
+                  "        pm.expect(item).to.have.property(\"reading_engine_name\");",
+                  "        pm.expect(item).to.have.property(\"engine_package_url\");",
+                  "        pm.expect(item).to.have.property(\"engine_package_md5_signature\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"Fields have correct data types\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_engine_id).to.be.a(\"number\");",
+                  "        pm.expect(item.reading_engine_name).to.be.a(\"string\");",
+                  "        pm.expect(item.engine_package_url).to.be.a(\"string\");",
+                  "        pm.expect(item.engine_package_md5_signature).to.be.a(\"string\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"reading_engine_id is positive\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_engine_id).to.be.above(0);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"No duplicate reading_engine_id\", function () {",
+                  "    const ids = res.data.map(item => item.reading_engine_id);",
+                  "    const uniqueIds = [...new Set(ids)];",
+                  "    pm.expect(ids.length).to.eql(uniqueIds.length);",
+                  "});",
+                  "",
+                  "pm.test(\"reading_engine_name is not empty\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.reading_engine_name).to.not.be.empty;",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"engine_package_url is valid URL\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.engine_package_url)",
+                  "          .to.match(/^https?:\\/\\/.+/);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"MD5 signature is valid\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.engine_package_md5_signature)",
+                  "          .to.match(/^[a-f0-9]{32}$/);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"MD5 matches version in URL\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        const url = item.engine_package_url;",
+                  "        const version = url.split(\"v=\")[1];",
+                  "",
+                  "        if (version) {",
+                  "            pm.expect(version).to.include(item.engine_package_md5_signature);",
+                  "        }",
+                  "    });",
+                  "});",
+                  "",
+                  "const expectedEngines = [",
+                  "    \"silent_books\",",
+                  "    \"picture_books\",",
+                  "    \"non_chaptered_books\",",
+                  "    \"chaptered_books\",",
+                  "    \"commics\"",
+                  "];",
+                  "",
+                  "pm.test(\"Engine names are valid\", function () {",
+                  "    const names = res.data.map(item => item.reading_engine_name);",
+                  "    expectedEngines.forEach(name => {",
+                  "        pm.expect(names).to.include(name);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"Engine package is ZIP file\", function () {",
+                  "    res.data.forEach(item => {",
+                  "        pm.expect(item.engine_package_url).to.include(\".zip\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reading-engines",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reading-engines"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/reading-engines' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "reading_language_iso_code",
+      "value": ""
+    }
+  ]
+}

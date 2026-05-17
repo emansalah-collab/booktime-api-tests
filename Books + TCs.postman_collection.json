@@ -1,0 +1,1576 @@
+{
+  "info": {
+    "_postman_id": "de169f91-89cb-48a3-96bd-8b76311709ca",
+    "name": "Books + TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "featured-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "///////",
+                  "pm.test(\"Response time is less than 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "//////",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "//////",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data exists\", function () {",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "/////",
+                  "res.data.forEach((book) => {",
+                  "    pm.test(\"Book has required fields\", function () {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_blurb\");",
+                  "        pm.expect(book).to.have.property(\"number_of_words\");",
+                  "        pm.expect(book).to.have.property(\"number_of_images\");",
+                  "        pm.expect(book).to.have.property(\"contributors\");",
+                  "    });",
+                  "});",
+                  "/////",
+                  "pm.test(\"Language applied\", function () {",
+                  "    pm.expect(pm.request.url.toString()).to.include(pm.variables.get(\"reading_language_iso_code\"));",
+                  "});",
+                  "//////",
+                  "res.data.forEach((book) => {",
+                  "    pm.test(\"Book fields types are correct\", function () {",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");",
+                  "        pm.expect(book.number_of_images).to.be.a(\"number\");",
+                  "        pm.expect(book.contributors).to.be.a(\"array\");",
+                  "    });",
+                  "});",
+                  "/////",
+                  "pm.test(\"Max 12 featured books\", () => {",
+                  "    pm.expect(res.data.length).to.be.at.equal(12);",
+                  "});",
+                  "/////",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/featured-books",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "featured-books"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/featured-books' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "featured-books-user",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "///////\r",
+                  "pm.test(\"Response time is less than 2s\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "//////\r",
+                  "pm.test(\"Response is JSON\", function () {\r",
+                  "    pm.response.to.be.json;\r",
+                  "});\r",
+                  "//////\r",
+                  "let res = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Data exists\", function () {\r",
+                  "    pm.expect(res.data).to.be.an(\"array\");\r",
+                  "});\r",
+                  "/////\r",
+                  "res.data.forEach((book) => {\r",
+                  "    pm.test(\"Book has required fields\", function () {\r",
+                  "        pm.expect(book).to.have.property(\"book_id\");\r",
+                  "        pm.expect(book).to.have.property(\"book_title\");\r",
+                  "        pm.expect(book).to.have.property(\"book_blurb\");\r",
+                  "        pm.expect(book).to.have.property(\"number_of_words\");\r",
+                  "        pm.expect(book).to.have.property(\"number_of_images\");\r",
+                  "        pm.expect(book).to.have.property(\"contributors\");\r",
+                  "    });\r",
+                  "});\r",
+                  "/////\r",
+                  "pm.test(\"Language applied\", function () {\r",
+                  "    pm.expect(pm.request.url.toString()).to.include(pm.variables.get(\"reading_language_iso_code\"));\r",
+                  "});\r",
+                  "//////\r",
+                  "res.data.forEach((book) => {\r",
+                  "    pm.test(\"Book fields types are correct\", function () {\r",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");\r",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");\r",
+                  "        pm.expect(book.number_of_images).to.be.a(\"number\");\r",
+                  "        pm.expect(book.contributors).to.be.a(\"array\");\r",
+                  "    });\r",
+                  "});\r",
+                  "/////\r",
+                  "pm.test(\"Max 12 featured books\", () => {\r",
+                  "    pm.expect(res.data.length).to.be.at.equal(12);\r",
+                  "});\r",
+                  "/////\r",
+                  "\r",
+                  "\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/featured-books?user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "featured-books"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/featured-books' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "carousel-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "///////",
+                  "pm.test(\"Response time is less than 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "//////",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "//////",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data is object\", () => {",
+                  "    pm.expect(res.data).to.be.an(\"object\");",
+                  "});",
+                  "",
+                  "///",
+                  "pm.test(\"featuredBook is array\", () => {",
+                  "    pm.expect(res.data.featuredBook).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"featuredBook is not empty\", () => {",
+                  "    pm.expect(res.data.featuredBook.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book has required fields\", () => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"book_id is 8 digits\", () => {",
+                  "        pm.expect(book.book_id.toString()).to.match(/^\\d{8}$/);",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Valid types\", () => {",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");",
+                  "        pm.expect(book.number_of_words).to.be.a(\"number\");",
+                  "        pm.expect(book.contributors).to.be.an(\"array\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    book.contributors.forEach((c) => {",
+                  "        pm.test(\"Contributor valid\", () => {",
+                  "            pm.expect(c).to.have.property(\"contributor_id\");",
+                  "            pm.expect(c).to.have.property(\"contributor_name\");",
+                  "            pm.expect(c).to.have.property(\"contributor_role_name\");",
+                  "        });",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Cover URL valid\", () => {",
+                  "        pm.expect(book.book_cover_url).to.include(\"http\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "pm.test(\"readAgain is array\", () => {",
+                  "    pm.expect(res.data.readAgain).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"continueReading is array\", () => {",
+                  "    pm.expect(res.data.continueReading).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/carousel-books",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "carousel-books"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/carousel-books' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "carousel-books-user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "///////",
+                  "pm.test(\"Response time is less than 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "//////",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "//////",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data is object\", () => {",
+                  "    pm.expect(res.data).to.be.an(\"object\");",
+                  "});",
+                  "",
+                  "///",
+                  "pm.test(\"featuredBook is array\", () => {",
+                  "    pm.expect(res.data.featuredBook).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"featuredBook is not empty\", () => {",
+                  "    pm.expect(res.data.featuredBook.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book has required fields\", () => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"book_id is 8 digits\", () => {",
+                  "        pm.expect(book.book_id.toString()).to.match(/^\\d{8}$/);",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Valid types\", () => {",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");",
+                  "        pm.expect(book.number_of_words).to.be.a(\"number\");",
+                  "        pm.expect(book.contributors).to.be.an(\"array\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    book.contributors.forEach((c) => {",
+                  "        pm.test(\"Contributor valid\", () => {",
+                  "            pm.expect(c).to.have.property(\"contributor_id\");",
+                  "            pm.expect(c).to.have.property(\"contributor_name\");",
+                  "            pm.expect(c).to.have.property(\"contributor_role_name\");",
+                  "        });",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "res.data.featuredBook.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Cover URL valid\", () => {",
+                  "        pm.expect(book.book_cover_url).to.include(\"http\");",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "pm.test(\"readAgain is array\", () => {",
+                  "    pm.expect(res.data.readAgain).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"continueReading is array\", () => {",
+                  "    pm.expect(res.data.continueReading).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/carousel-books?user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "carousel-books"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/carousel-books' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "user-profile-books-user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/user-profile-books?user_id={{user_id}}&read_again=true&page=1&page_size=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "user-profile-books"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                },
+                {
+                  "key": "read_again",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/user-profile-books?user_id=504101020215&read_again=true&page=1&page_size=20' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "user-profile-books",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/user-profile-books?read_again=true&page=1&page_size=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "user-profile-books"
+              ],
+              "query": [
+                {
+                  "key": "read_again",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/user-profile-books?read_again=true&page=1&page_size=20' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", () => {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data exists\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books is array\", () => {",
+                  "    pm.expect(res.data.books).to.be.an(\"array\");",
+                  "});",
+                  "pm.test(\"Page size is respected\", () => {",
+                  "    pm.expect(res.data.books.length).to.be.at.most(20);",
+                  "});",
+                  "",
+                  "pm.test(\"Books not empty\", () => {",
+                  "    pm.expect(res.data.books.length).to.be.greaterThan(0);",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book has required fields\", () => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Valid data types\", () => {",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book ID is 8 digits\", () => {",
+                  "        pm.expect(book.book_id.toString()).to.match(/^\\d{8}$/);",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Cover URL valid\", () => {",
+                  "        pm.expect(book.book_cover_url).to.include(\"http\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    if (book.contributors) {",
+                  "        pm.test(\"Contributors is array\", () => {",
+                  "            pm.expect(book.contributors).to.be.an(\"array\");",
+                  "        });",
+                  "    }",
+                  "",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books?page=1&page_size=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/books?page=1&page_size=20' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "books-user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", () => {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data exists\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books is array\", () => {",
+                  "    pm.expect(res.data.books).to.be.an(\"array\");",
+                  "});",
+                  "pm.test(\"Page size is respected\", () => {",
+                  "    pm.expect(res.data.books.length).to.be.at.most(20);",
+                  "});",
+                  "",
+                  "pm.test(\"Books not empty\", () => {",
+                  "    pm.expect(res.data.books.length).to.be.greaterThan(0);",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book has required fields\", () => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Valid data types\", () => {",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");",
+                  "        pm.expect(book.book_title).to.be.a(\"string\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Book ID is 8 digits\", () => {",
+                  "        pm.expect(book.book_id.toString()).to.match(/^\\d{8}$/);",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    pm.test(\"Cover URL valid\", () => {",
+                  "        pm.expect(book.book_cover_url).to.include(\"http\");",
+                  "    });",
+                  "",
+                  "});",
+                  "res.data.books.forEach((book) => {",
+                  "",
+                  "    if (book.contributors) {",
+                  "        pm.test(\"Contributors is array\", () => {",
+                  "            pm.expect(book.contributors).to.be.an(\"array\");",
+                  "        });",
+                  "    }",
+                  "",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books?page=1&page_size=20&user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                },
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/books?page=1&page_size=20&user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "BOOKS",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books?page=1&page_size=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/books?page=1&page_size=20' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "BOOKS-USER",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books?page=1&page_size=20&user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                },
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/books?page=1&page_size=20&user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "Reading-book",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 201\", () => {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", () => {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Request contains book_id\", () => {",
+                  "    let req = JSON.parse(pm.request.body.raw);",
+                  "    pm.expect(req.booksItemNumbers).to.include(parseInt(pm.variables.get(\"book_id\")));",
+                  "});",
+                  "pm.test(\"user_id exists\", () => {",
+                  "    pm.expect(pm.request.url.query.get(\"user_id\")).to.not.be.undefined;",
+                  "});",
+                  "pm.test(\"user_id exists\", () => {",
+                  "    pm.expect(pm.request.url.query.get(\"user_id\")).to.not.be.undefined;",
+                  "});",
+                  "pm.test(\"Book ID is valid format\", () => {",
+                  "    let req = JSON.parse(pm.request.body.raw);",
+                  "    req.booksItemNumbers.forEach(id => {",
+                  "        pm.expect(id.toString()).to.match(/^\\d{8}$/);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"booksItemNumbers not empty\", () => {",
+                  "    let req = JSON.parse(pm.request.body.raw);",
+                  "    pm.expect(req.booksItemNumbers.length).to.be.greaterThan(0);",
+                  "});",
+                  "pm.test(\"No duplicate book IDs\", () => {",
+                  "    let req = JSON.parse(pm.request.body.raw);",
+                  "    let unique = [...new Set(req.booksItemNumbers)];",
+                  "    pm.expect(unique.length).to.eql(req.booksItemNumbers.length);",
+                  "});",
+                  "",
+                  "pm.test(\"user_id is not empty\", () => {",
+                  "    pm.expect(pm.variables.get(\"user_id\")).to.not.be.oneOf([null, \"\"]);",
+                  "});",
+                  "",
+                  "pm.test(\"Book reading started\", () => {",
+                  "    pm.expect(res.data).to.not.be.null;",
+                  "});",
+                  "",
+                  "if (res.data.book_id) {",
+                  "    pm.test(\"Response book_id matches request\", () => {",
+                  "        let req = JSON.parse(pm.request.body.raw);",
+                  "        pm.expect(req.booksItemNumbers).to.include(res.data.book_id);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"booksItemNumbers\": [\n    {{book_id}}\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books?user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/ar/books?user_id=504101020215' \\\n  -H 'accept: text/plain' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"booksItemNumbers\": [\n    18215969\n  ]\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "books-download",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON or text\", () => {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Authorization header exists\", () => {",
+                  "    pm.expect(pm.request.headers.get(\"Authorization\")).to.not.be.undefined;",
+                  "});",
+                  "pm.test(\"Book ID exists in URL\", () => {",
+                  "    pm.expect(pm.request.url.toString()).to.include(pm.variables.get(\"book_id\"));",
+                  "});",
+                  "pm.test(\"Response is not empty\", () => {",
+                  "    pm.expect(pm.response.text()).to.not.be.oneOf([null, \"\"]);",
+                  "});",
+                  "",
+                  "let res = pm.response.text();",
+                  "",
+                  "pm.test(\"Response contains valid URL\", () => {",
+                  "    pm.expect(res).to.include(\"http\");",
+                  "});",
+                  "",
+                  "pm.test(\"Download is zip file\", () => {",
+                  "    pm.expect(pm.response.text()).to.include(\".zip\");",
+                  "});",
+                  "",
+                  "pm.test(\"Book ID used correctly\", () => {",
+                  "    pm.expect(pm.request.url.path.join(\"/\")).to.include(pm.variables.get(\"book_id\"));",
+                  "});",
+                  "",
+                  "pm.test(\"Unauthorized access handled\", () => {",
+                  "    if (pm.response.code === 401) {",
+                  "        pm.expect(pm.response.code).to.eql(401);",
+                  "    }",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhZmFkaTQ1MzdAcG9pc29ud29yZC5jb20iLCJpZCI6IjIzMDgzNDk2NDg3MyIsInJvbGUiOiJyZWFkZXIiLCJqdGkiOiI1NGQxNmE4OS0yNmFjLTQ0NWItYWM4MS01MjQwMWQ2NWE1MmIiLCJleHAiOjIwOTMwNjY5NDUsImlzcyI6Ind3dy5ib29rdGltZS5vcmciLCJhdWQiOiJodHRwOi8vYXBpLWRldi5ib29rdGltZS5vcmcvIn0.6yaD6hRWpSR1TzVbBTcP-_2NWMd1IfpE2f2UVnVbZWc",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/books/{{book_id}}/download-url",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "books",
+                "{{book_id}}",
+                "download-url"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/books/68014174/download-url' \\\n  -H 'accept: text/plain' \\\n  -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QuaGluZGF3aTU1QGdtYWlsLmNvbSIsImlkIjoiMTAxOTE4NzU2Nzg2Iiwicm9sZSI6InJlYWRlciIsImp0aSI6ImVjMTZjNDgwLTQ4MTctNDIwMS1hNjgzLTFmZGM1OTc3YWMzOCIsImV4cCI6MjA4NTcxOTE3NSwiaXNzIjoid3d3LmJvb2t0aW1lLm9yZyIsImF1ZCI6Imh0dHA6Ly9hcGktZGV2LmJvb2t0aW1lLm9yZy8ifQ.CNh8bQxdkGDao-UV1zIF0raQyHq84wJnR5VZS_hLx1M'"
+          },
+          "response": []
+        },
+        {
+          "name": "recommended-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", () => {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books data is an array\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books array is not empty\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data.length).to.be.greaterThan(0);",
+                  "});",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"book_id is a number\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"book_title is valid\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book.book_title).to.be.a(\"string\").and.not.empty;",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"supported voices have download_url\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        book.supported_voices.forEach(voice => {",
+                  "            pm.expect(voice).to.have.property(\"download_url\");",
+                  "        });",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/recommended-books",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "recommended-books"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/recommended-books' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "recommended-books per user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", () => {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2s\", () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", () => {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books data is an array\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books array is not empty\", function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data.length).to.be.greaterThan(0);",
+                  "});",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"book_id is a number\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book.book_id).to.be.a(\"number\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"book_title is valid\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        pm.expect(book.book_title).to.be.a(\"string\").and.not.empty;",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"supported voices have download_url\", function () {",
+                  "    const res = pm.response.json();",
+                  "",
+                  "    res.data.forEach(book => {",
+                  "        book.supported_voices.forEach(voice => {",
+                  "            pm.expect(voice).to.have.property(\"download_url\");",
+                  "        });",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "https://api-dev.booktime.org/v1/en/recommended-books?user_id=543218342048",
+              "protocol": "https",
+              "host": [
+                "api-dev",
+                "booktime",
+                "org"
+              ],
+              "path": [
+                "v1",
+                "en",
+                "recommended-books"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "543218342048"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "contributors-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Books array exists\", function () {",
+                  "    pm.expect(res.data).to.have.property(\"books\");",
+                  "    pm.expect(res.data.books).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    res.data.books.forEach(book => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_blurb\");",
+                  "        pm.expect(book).to.have.property(\"number_of_words\");",
+                  "        pm.expect(book).to.have.property(\"number_of_images\");",
+                  "        pm.expect(book).to.have.property(\"contributors\");",
+                  "        pm.expect(book).to.have.property(\"reading_level_id\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/contributors/{{contributors_id}}/books?page=1&page_size=20&user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "contributors",
+                "{{contributors_id}}",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                },
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/contributors/95219494/books?page=1&page_size=20&user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "search-books",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has data object\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "pm.test(\"Data has books array\", function () {",
+                  "    pm.expect(res.data).to.have.property(\"books\");",
+                  "    pm.expect(res.data.books).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Books array is not empty\", function () {",
+                  "    pm.expect(res.data.books.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Each book has required fields\", function () {",
+                  "    res.data.books.forEach(book => {",
+                  "        pm.expect(book).to.have.property(\"book_id\");",
+                  "        pm.expect(book).to.have.property(\"book_title\");",
+                  "        pm.expect(book).to.have.property(\"book_blurb\");",
+                  "        pm.expect(book).to.have.property(\"number_of_words\");",
+                  "        pm.expect(book).to.have.property(\"number_of_images\");",
+                  "        pm.expect(book).to.have.property(\"contributors\");",
+                  "        pm.expect(book).to.have.property(\"book_cover_url\");",
+                  "    });",
+                  "});",
+                  "",
+                  "",
+                  "let books = res.data?.books || [];",
+                  "pm.test(\"Search API returns max 100 books only\", function () {",
+                  "    pm.expect(books.length).to.be.at.most(100);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/search?keyword={{search_keyword}}&page=1&page_size=20&user_id={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "{{search_keyword}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20"
+                },
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/search?keyword=a&page=1&page_size=20&user_id=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "published-books",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {{published_book}}\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/published-books",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "published-books"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/published-books' \\\n  -H 'accept: text/plain' \\\n  -H 'Content-Type: application/json' \\\n  -d '[\n  68014174\n]'"
+          },
+          "response": []
+        },
+        {
+          "name": "published-books-report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {{published_book}}\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/published-books-report",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "published-books-report"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/published-books-report' \\\n  -H 'accept: text/plain' \\\n  -H 'Content-Type: application/json' \\\n  -d '[\n  68014174\n]'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api-dev.booktime.org"
+    },
+    {
+      "key": "reading_language_iso_code",
+      "value": "en"
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "book_id",
+      "value": ""
+    },
+    {
+      "key": "contributors_id",
+      "value": ""
+    },
+    {
+      "key": "search_keyword",
+      "value": ""
+    },
+    {
+      "key": "Authorization",
+      "value": ""
+    }
+  ]
+}

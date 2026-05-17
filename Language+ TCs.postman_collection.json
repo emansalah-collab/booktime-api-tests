@@ -1,0 +1,261 @@
+{
+  "info": {
+    "_postman_id": "01a50a7b-4f19-474e-b173-4dc6b5f9b557",
+    "name": "Language+ TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "language Copy",
+      "item": [
+        {
+          "name": "reading-languages",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "pm.test(\"Data array exists\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "    pm.expect(res.data).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Languages list is not empty\", function () {",
+                  "    pm.expect(res.data.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Each language has required fields\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang).to.have.property(\"reading_language_iso_code\");",
+                  "        pm.expect(lang).to.have.property(\"reading_language_name\");",
+                  "        pm.expect(lang).to.have.property(\"books_count\");",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"ISO codes are valid strings\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang.reading_language_iso_code).to.be.a(\"string\");",
+                  "        pm.expect(lang.reading_language_iso_code.length).to.be.within(2, 5);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"Language names are valid\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang.reading_language_name).to.be.a(\"string\");",
+                  "        pm.expect(lang.reading_language_name.length).to.be.above(0);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"books_count is valid number\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang.books_count).to.be.a(\"number\");",
+                  "        pm.expect(lang.books_count).to.be.at.least(0);",
+                  "    });",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"ISO codes are unique\", function () {",
+                  "    let codes = res.data.map(l => l.reading_language_iso_code);",
+                  "    let uniqueCodes = [...new Set(codes)];",
+                  "",
+                  "    pm.expect(codes.length).to.eql(uniqueCodes.length);",
+                  "});",
+                  "",
+                  "let codes = res.data.map(l => l.reading_language_iso_code);",
+                  "",
+                  "pm.test(\"Contains core languages\", function () {",
+                  "    pm.expect(codes).to.include(\"en\");",
+                  "    pm.expect(codes).to.include(\"ar\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Languages with books_count > 0\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang.books_count).to.be.at.least(0);",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"No null critical fields\", function () {",
+                  "    res.data.forEach(lang => {",
+                  "        pm.expect(lang.reading_language_iso_code).to.not.be.null;",
+                  "        pm.expect(lang.reading_language_name).to.not.be.null;",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/reading-languages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "reading-languages"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/reading-languages' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "language_resource_file",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2s\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is valid JSON\", function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"Response contains data object\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "    pm.expect(res.data).to.be.an(\"object\");",
+                  "});",
+                  "",
+                  "pm.test(\"Required fields exist\", function () {",
+                  "    pm.expect(res.data).to.have.property(\"reading_language_iso_code\");",
+                  "    pm.expect(res.data).to.have.property(\"language_resource_file_path\");",
+                  "    pm.expect(res.data).to.have.property(\"language_resource_file_md5\");",
+                  "});",
+                  "",
+                  "pm.test(\"Fields have correct data types\", function () {",
+                  "    pm.expect(res.data.reading_language_iso_code).to.be.a(\"string\");",
+                  "    pm.expect(res.data.language_resource_file_path).to.be.a(\"string\");",
+                  "    pm.expect(res.data.language_resource_file_md5).to.be.a(\"string\");",
+                  "});",
+                  "",
+                  "pm.test(\"ISO code matches request\", function () {",
+                  "   const expectedLang = pm.collectionVariables.get(\"reading_language_iso_code\");",
+                  "    pm.expect(res.data.reading_language_iso_code).to.eql(expectedLang);",
+                  "});",
+                  "",
+                  "pm.test(\"language_resource_file_path is valid URL\", function () {",
+                  "    pm.expect(res.data.language_resource_file_path)",
+                  "      .to.match(/^https?:\\/\\/.+/);",
+                  "});",
+                  "",
+                  "pm.test(\"MD5 hash format is valid\", function () {",
+                  "    pm.expect(res.data.language_resource_file_md5)",
+                  "      .to.match(/^[a-f0-9]{32}$/);",
+                  "});",
+                  "",
+                  "pm.test(\"Resource file is JSON\", function () {",
+                  "    pm.expect(res.data.language_resource_file_path)",
+                  "      .to.include(\".json\");",
+                  "});",
+                  "",
+                  "pm.test(\"Fields are not empty\", function () {",
+                  "    pm.expect(res.data.reading_language_iso_code).to.not.be.empty;",
+                  "    pm.expect(res.data.language_resource_file_path).to.not.be.empty;",
+                  "    pm.expect(res.data.language_resource_file_md5).to.not.be.empty;",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/language_resource_file",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "{{reading_language_iso_code}}",
+                "language_resource_file"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/ar/language_resource_file' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "reading_language_iso_code",
+      "value": ""
+    }
+  ]
+}
