@@ -19,7 +19,7 @@
               "pm.test(\"Expiry exists\", () => pm.expect(res.data.otp_expires_in).to.not.be.undefined);",
               "setTimeout(() => {",
               "    pm.execution.setNextRequest(\"Get OTP\");",
-              "}, 2000);"
+              "}, 4000);"
             ],
             "type": "text/javascript",
             "packages": {},
