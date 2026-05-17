@@ -1,4 +1,4 @@
-To Check update and PuSh data:
+To Check update and Push data:
 
 git status
 git add .
