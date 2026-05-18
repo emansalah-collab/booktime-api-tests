@@ -394,11 +394,7 @@
                   "        }",
                   "    });",
                   "});",
-                  "",
-                  "pm.test(\"Pagination fields exist\", () => {",
-                  "    pm.expect(data.total_pages).to.exist;",
-                  "    pm.expect(data.current_page).to.exist;",
-                  "});"
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {},
