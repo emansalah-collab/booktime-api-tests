@@ -183,9 +183,9 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}}}/v1/users/profile",
+              "raw": "{{base_url}}/v1/users/profile",
               "host": [
-                "{{base_url}}}}"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
@@ -344,12 +344,10 @@
               }
             ],
             "url": {
-              "raw": "https://api-dev.booktime.org/v1/users/rating",
+              "raw": "https://{{base_url}}/v1/users/rating",
               "protocol": "https",
               "host": [
-                "api-dev",
-                "booktime",
-                "org"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
@@ -381,17 +379,14 @@
               }
             ],
             "url": {
-              "raw": "https://api-dev.booktime.org/v1/users/en/favorites?ids_only=true&page=1&page_size=20",
-              "protocol": "https",
+              "raw": "{{base_url}}}}/v1/users/{{reading_language_iso_code}}/favorites?ids_only=true&page=1&page_size=20",
               "host": [
-                "api-dev",
-                "booktime",
-                "org"
+                "{{base_url}}}}"
               ],
               "path": [
                 "v1",
                 "users",
-                "en",
+                "{{reading_language_iso_code}}",
                 "favorites"
               ],
               "query": [
@@ -441,17 +436,14 @@
               }
             },
             "url": {
-              "raw": "https://api-dev.booktime.org/v1/users/en/favorites",
-              "protocol": "https",
+              "raw": "{{base_url}}/v1/users/{{reading_language_iso_code}}/favorites",
               "host": [
-                "api-dev",
-                "booktime",
-                "org"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
                 "users",
-                "en",
+                "{{reading_language_iso_code}}",
                 "favorites"
               ]
             },
@@ -487,17 +479,14 @@
               }
             },
             "url": {
-              "raw": "https://api-dev.booktime.org/v1/users/en/favorites",
-              "protocol": "https",
+              "raw": "{{base_url}}/v1/users/{{reading_language_iso_code}}}/favorites",
               "host": [
-                "api-dev",
-                "booktime",
-                "org"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
                 "users",
-                "en",
+                "{{reading_language_iso_code}}}",
                 "favorites"
               ]
             },
@@ -573,12 +562,9 @@
               }
             ],
             "url": {
-              "raw": "https://api-dev.booktime.org/v1/users/status",
-              "protocol": "https",
+              "raw": "{{base_url}}/v1/users/status",
               "host": [
-                "api-dev",
-                "booktime",
-                "org"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
