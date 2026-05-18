@@ -1,0 +1,273 @@
+{
+  "info": {
+    "_postman_id": "a978d5ba-73b2-4117-b95a-f74c51209e73",
+    "name": "Streaks + TCs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44102828"
+  },
+  "item": [
+    {
+      "name": "Streaks Copy",
+      "item": [
+        {
+          "name": "streaks",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "",
+                  "let res = pm.response.json();",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response Time",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// ✅ Data exists",
+                  "pm.test(\"Response contains data\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Validate required fields",
+                  "pm.test(\"Current streak days exists\", function () {",
+                  "    pm.expect(res.data.current_streak_days).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "pm.test(\"Longest streak days exists\", function () {",
+                  "    pm.expect(res.data.longest_streak_days).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "pm.test(\"Last reading date exists\", function () {",
+                  "    pm.expect(res.data.last_reading_date).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "pm.test(\"Streak history exists\", function () {",
+                  "    pm.expect(res.data.streaks_history).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "// ✅ Type validation",
+                  "pm.test(\"Current streak days is number\", function () {",
+                  "    pm.expect(res.data.current_streak_days).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"Longest streak days is number\", function () {",
+                  "    pm.expect(res.data.longest_streak_days).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"Streak history is array\", function () {",
+                  "    pm.expect(res.data.streaks_history).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// ✅ Logical validation",
+                  "pm.test(\"Longest streak >= current streak\", function () {",
+                  "    pm.expect(res.data.longest_streak_days)",
+                  "        .to.be.at.least(res.data.current_streak_days);",
+                  "});",
+                  "",
+                  "// ✅ Date validation",
+                  "pm.test(\"Last reading date is valid date\", function () {",
+                  "    pm.expect(",
+                  "        new Date(res.data.last_reading_date).toString()",
+                  "    ).to.not.eql(\"Invalid Date\");",
+                  "});",
+                  "",
+                  "// ✅ Validate streak history dates",
+                  "pm.test(\"All streak history dates are valid\", function () {",
+                  "",
+                  "    res.data.streaks_history.forEach(date => {",
+                  "",
+                  "        pm.expect(",
+                  "            new Date(date).toString()",
+                  "        ).to.not.eql(\"Invalid Date\");",
+                  "",
+                  "    });",
+                  "",
+                  "});",
+                  "",
+                  "// ✅ Validate no duplicate dates",
+                  "pm.test(\"Streak history has no duplicate dates\", function () {",
+                  "",
+                  "    let uniqueDates = [...new Set(res.data.streaks_history)];",
+                  "",
+                  "    pm.expect(uniqueDates.length)",
+                  "        .to.eql(res.data.streaks_history.length);",
+                  "",
+                  "});",
+                  "",
+                  "// ✅ Response not empty",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/get-user-insights?userId={{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "get-user-insights"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-dev.booktime.org/v1/get-user-insights?userId=504101020215' \\\n  -H 'accept: text/plain'"
+          },
+          "response": []
+        },
+        {
+          "name": "streaks-post",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const currentDate = new Date().toISOString();",
+                  "pm.environment.set(\"current_date\", currentDate);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ✅ Parse response",
+                  "let res = pm.response.json();",
+                  "",
+                  "// ✅ Status Code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// ✅ Response Time",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// ✅ Response contains data",
+                  "pm.test(\"Response contains data field\", function () {",
+                  "    pm.expect(res).to.have.property(\"data\");",
+                  "});",
+                  "",
+                  "// ✅ Success message validation",
+                  "pm.test(\"Success message is correct\", function () {",
+                  "    pm.expect(res.data)",
+                  "        .to.eql(\"Streeks saved and Insights updated successfully\");",
+                  "});",
+                  "",
+                  "// ✅ Request body variables validation",
+                  "pm.test(\"user_id exists\", function () {",
+                  "",
+                  "    let userId = pm.variables.get(\"user_id\");",
+                  "",
+                  "    pm.expect(userId).to.not.be.undefined;",
+                  "    pm.expect(userId).to.not.eql(\"\");",
+                  "});",
+                  "",
+                  "// ✅ Current date exists",
+                  "pm.test(\"current_date variable exists\", function () {",
+                  "",
+                  "    let currentDate = pm.environment.get(\"current_date\");",
+                  "",
+                  "    pm.expect(currentDate).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "// ✅ Current date format validation",
+                  "pm.test(\"current_date is valid ISO date\", function () {",
+                  "",
+                  "    let currentDate = pm.environment.get(\"current_date\");",
+                  "",
+                  "    pm.expect(",
+                  "        new Date(currentDate).toString()",
+                  "    ).to.not.eql(\"Invalid Date\");",
+                  "});",
+                  "",
+                  "// ✅ Validate timezone field exists in request",
+                  "pm.test(\"Timezone field exists\", function () {",
+                  "",
+                  "    let rawBody = pm.variables.replaceIn(pm.request.body.raw);",
+                  "",
+                  "    pm.expect(rawBody)",
+                  "        .to.include(\"reading_date_timezone\");",
+                  "",
+                  "});",
+                  "",
+                  "// ✅ Response body is not empty",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "text/plain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"user_id\": {{user_id}},\n    \"reading_date\": \"{{current_date}}\",\n    \"reading_date_timezone\": \"string\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/insert-user-activity",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "insert-user-activity"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-dev.booktime.org/v1/insert-user-activity' \\\n  -H 'accept: text/plain' \\\n  -H 'Content-Type: application/json' \\\n  -d '[\n  {\n    \"user_id\": 504101020215,\n    \"reading_date\": \"2026-02-04T08:17:30.938Z\",\n    \"reading_date_timezone\": \"string\"\n  }\n]'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
