@@ -378,9 +378,9 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}}}/v1/users/{{reading_language_iso_code}}/favorites?ids_only=true&page=1&page_size=20",
+              "raw": "{{base_url}}/v1/users/{{reading_language_iso_code}}/favorites?ids_only=true&page=1&page_size=20",
               "host": [
-                "{{base_url}}}}"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
