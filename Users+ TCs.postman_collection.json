@@ -99,9 +99,9 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}}}/v1/users/profile",
+              "raw": "{{base_url}}/v1/users/profile",
               "host": [
-                "{{base_url}}}}"
+                "{{base_url}}"
               ],
               "path": [
                 "v1",
@@ -344,8 +344,7 @@
               }
             ],
             "url": {
-              "raw": "https://{{base_url}}/v1/users/rating",
-              "protocol": "https",
+              "raw": "{{base_url}}/v1/users/rating",
               "host": [
                 "{{base_url}}"
               ],
