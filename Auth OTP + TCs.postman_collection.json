@@ -17,7 +17,12 @@
               "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
               "pm.test(\"Message correct\", () => pm.expect(res.data.message).to.eql(\"OTP sent successfully\"));",
               "pm.test(\"Expiry exists\", () => pm.expect(res.data.otp_expires_in).to.not.be.undefined);",
-              "pm.execution.setNextRequest(\"Get OTP\");"
+              "// pm.execution.setNextRequest(\"Get OTP\");",
+              "setTimeout(() => {",
+              "",
+              "    pm.execution.setNextRequest(\"Get OTP\");",
+              "",
+              "}, 5000);"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -38,13 +43,13 @@
           }
         },
         "url": {
-          "raw": "{{base_url}}/v1/en/auth/send-otp",
+          "raw": "{{base_url}}/v1/{{reading_language_iso_code}}/auth/send-otp",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "v1",
-            "en",
+            "{{reading_language_iso_code}}",
             "auth",
             "send-otp"
           ]
@@ -97,7 +102,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGZjZTZmOTViNzRhNDkzN2E5MGMzMDdiYzAyMGExZmEiLCJtYWlsYm94IjoiZG9rb3A5NTI0NEBoaWRldmFrLmNvbSIsImlhdCI6MTc2MDUxMzEzMX0.ZDhtRa-MBm9NqQ-J4VKL9rzhN575EgVEM8QKKED_KxE",
+            "value": "Bearer {{auth_token}}",
             "type": "text"
           }
         ],
@@ -389,10 +394,6 @@
     {
       "key": "create_account_token",
       "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJuaWRhbTk1Mjc4QHBvaXNvbndvcmQuY29tIiwidG9rZW5UeXBlIjoiQ3JlYXRlVXNlclRva2VuIiwianRpIjoiOWMyZmE1YTktMjkwZS00NjhiLWFiZTUtNGI2OTU0YmE3M2M2IiwiZXhwIjoyMDkyODg0NzEzLCJpc3MiOiJ3d3cuYm9va3RpbWUub3JnIiwiYXVkIjoiaHR0cDovL2FwaS1kZXYuYm9va3RpbWUub3JnLyJ9.plc5pivMO6wnePe_XfIq6j4deL464Uh1eHZTyqDwgR4"
-    },
-    {
-      "key": "Authorization",
-      "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGZjZTZmOTViNzRhNDkzN2E5MGMzMDdiYzAyMGExZmEiLCJtYWlsYm94IjoibmlkYW05NTI3OEBwb2lzb253b3JkLmNvbSIsImlhdCI6MTc2MDUxMzEzMX0.OpT0s2uWBVj-6d-f0h74AakIjp7s-ELUoGunxu7zlpA"
     },
     {
       "key": "email",
